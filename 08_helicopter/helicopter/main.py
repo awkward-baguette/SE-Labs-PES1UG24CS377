@@ -1,9 +1,13 @@
 """
 Helicopter Game (Lab Starter)
 
-Run with:  python3 main.py
+Run with: python3 main.py
 
-Controls: Up/Down arrows to move.
+Controls:
+    Up/Down arrows -> move helicopter
+    Space          -> activate shield
+    R              -> restart after game over
+
 """
 
 import pygame
@@ -14,23 +18,34 @@ from game.renderer import WINDOW_SIZE
 
 def main():
     pygame.init()
+
     screen = pygame.display.set_mode(WINDOW_SIZE)
     pygame.display.set_caption("Helicopter")
+
     clock = pygame.time.Clock()
     font = pygame.font.SysFont("consolas", 22)
 
     engine = GameEngine()
+
     running = True
+
     while running:
+
         for event in pygame.event.get():
+
             if event.type == pygame.QUIT:
                 running = False
+
             elif event.type == pygame.KEYDOWN:
                 engine.handle_keydown(event.key)
 
-        keys = pygame.key.get_pressed()
-        engine.handle_input(keys)
-        engine.update()
+        if not engine.game_over:
+            keys = pygame.key.get_pressed()
+
+            engine.handle_input(keys)
+            engine.update()
+
+        # Always draw, including when game is over
         engine.draw(screen, font)
 
         pygame.display.flip()
