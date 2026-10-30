@@ -30,8 +30,8 @@ def setup_database():
 def find_patient(name):
     """ Finds a patient by name - returns id and allergies """
     cur = conn.cursor()
-    query = f"SELECT id, allergy FROM patients WHERE name = {name}"
-    return cur.execute(query).fetchall()
+    query = "SELECT id, allergy FROM patients WHERE name = ?"
+    return cur.execute(query, (name,)).fetchall()
 
 
 def add_stock(drug, units, expiry, stock, batch_log=None):
