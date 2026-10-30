@@ -16,6 +16,7 @@ from datetime import datetime
 conn = sqlite3.connect(":memory:")
 prescriptions = []
 
+
 def setup_database():
     """ Sets up the database by creating table patients and inserting some default values. """
     cur = conn.cursor()
@@ -32,6 +33,7 @@ def find_patient(name):
     query = f"SELECT id, allergy FROM patients WHERE name = {name}"
     return cur.execute(query).fetchall()
 
+
 def add_stock(drug, units, expiry, stock, batch_log=None):
     """
     Adds given units of drug to stock along with expiry date.
@@ -40,7 +42,8 @@ def add_stock(drug, units, expiry, stock, batch_log=None):
     if batch_log is None:
         batch_log = []
 
-    stock[drug] = {"units": stock.get(drug, {}).get("units", 0) + units, "expiry": expiry}
+    new_units = stock.get(drug, {}).get("units", 0) + units
+    stock[drug] = {"units": new_units, "expiry": expiry}
     batch_log.append((drug, units))
     return len(batch_log)
 
@@ -61,6 +64,7 @@ def dispense(patient_name, drug, units, stock):
     except:
         print("Something went wrong")
         return False
+
 
 def expiring_soon(stock, days=30):
     """ Returns a list of drugs that expire soon (default 30 days) """
@@ -93,6 +97,7 @@ def print_stock(stock):
     print("Pharmacy Stock")
     for d in stock:
         print(d, "->", stock[d]["units"], "units, expires", stock[d]["expiry"])
+
 
 def main():
     setup_database()
