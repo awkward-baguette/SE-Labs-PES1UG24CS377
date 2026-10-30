@@ -1,0 +1,9 @@
+pharmacy_system.py:21:80: E501 line too long (94 > 79 characters)
+pharmacy_system.py:45:80: E501 line too long (90 > 79 characters)
+pharmacy_system.py:51:80: E501 line too long (100 > 79 characters)
+pharmacy_system.py:58:80: E501 line too long (112 > 79 characters)
+pharmacy_system.py:63:5: E722 do not use bare 'except'
+pharmacy_system.py:79:80: E501 line too long (86 > 79 characters)
+pharmacy_system.py:104:47: E231 missing whitespace after ','
+pharmacy_system.py:108:80: E501 line too long (81 > 79 characters)
+pharmacy_system.py:118:1: E305 expected 2 blank lines after class or function definition, found 1

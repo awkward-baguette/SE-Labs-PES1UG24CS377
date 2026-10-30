@@ -1,0 +1,8 @@
+************* Module pharmacy_system
+pharmacy_system.py:59:0: C0301: Line too long (112/100) (line-too-long)
+pharmacy_system.py:64:4: W0702: No exception type(s) specified (bare-except)
+pharmacy_system.py:102:0: C0116: Missing function or method docstring (missing-function-docstring)
+
+------------------------------------------------------------------
+Your code has been rated at 9.61/10 (previous run: 9.60/10, +0.01)
+
