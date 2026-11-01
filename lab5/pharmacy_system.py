@@ -89,7 +89,7 @@ def load_stock(file="stock.json"):
             return json.load(f)
     except FileNotFoundError:
         print(f"The file {file} was not found")
-        return None
+        return {}
 
 
 def print_stock(stock):
