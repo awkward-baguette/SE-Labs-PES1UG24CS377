@@ -46,6 +46,19 @@ def test_single_standard_60_walk():
 
 #empty routes list
 def test_empty_routes():
+    routes = [
+            {
+                "route_confirmed": True,
+                "session_type": "standard_60",
+                "is_weekend": False,
+                "walks": [{"num_pets": 1, "aggression_alert": False, "needs_meds": False}]
+            }
+    ]
+    with pytest.raises(ValueError, match="Invalid routes list or transport fee"):
+        process_walking_routes(routes, -5.0)
+
+#negative base transport fee
+def test_negative_base_transport_fee():
     routes = None
     with pytest.raises(ValueError, match="Invalid routes list or transport fee"):
         process_walking_routes(routes, 5.0)
@@ -120,6 +133,20 @@ def test_agression_alert():
     assert result["total_revenue"] == 0.0
     assert result["status"] == "ZERO_EARNINGS"
 
+#agression alert plus 60
+def test_agression_alert_plus_60():
+    routes = [
+        {
+            "route_confirmed": True,
+            "session_type": "standard_60",
+            "is_weekend": False,
+            "walks": [{"num_pets": 1, "aggression_alert": True, "needs_meds": False}]
+        }
+    ]
+    result = process_walking_routes(routes, 5.0)
+    assert result["total_revenue"] == 0.0
+    assert result["status"] == "ZERO_EARNINGS"
+
 #needs medication
 def test_needs_medication():
     routes = [
@@ -141,18 +168,36 @@ def test_over_four_incidents():
             "route_confirmed": True,
             "session_type": "10_mins",
             "is_weekend": False,
-            "walks": [{"num_pets": -1, "aggression_alert": True, "needs_meds": False}]
+            "walks": [{"num_pets": 1, "aggression_alert": True, "needs_meds": False}]
         },
         {
             "route_confirmed": True,
-            "session_type": "standard_30",
+            "session_type": "10_mins",
             "is_weekend": False,
-            "walks": [{"num_pets": -1, "aggression_alert": True, "needs_meds": False}]
+            "walks": [{"num_pets": 1, "aggression_alert": True, "needs_meds": False}]
+        },
+        {
+            "route_confirmed": True,
+            "session_type": "10_mins",
+            "is_weekend": False,
+            "walks": [{"num_pets": 1, "aggression_alert": True, "needs_meds": False}]
+        },
+        {
+            "route_confirmed": True,
+            "session_type": "10_mins",
+            "is_weekend": False,
+            "walks": [{"num_pets": 1, "aggression_alert": True, "needs_meds": False}]
+        },
+        {
+            "route_confirmed": True,
+            "session_type": "10_mins",
+            "is_weekend": False,
+            "walks": [{"num_pets": 1, "aggression_alert": True, "needs_meds": False}]
         }
     ]
     result = process_walking_routes(routes, 5.0)
     assert result["total_revenue"] == 0.0
-    assert result["status"] == "ZERO_EARNINGS"
+    assert result["status"] == "INCIDENT_AUDIT"
 
 #standard gps
 def test_standard_gps():
