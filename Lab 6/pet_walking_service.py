@@ -60,12 +60,16 @@ def process_walking_routes(routes, base_transport_fee):
 
 
 def inspect_gps_collars(collar_matrix):
-    if not collar_matrix:
+    if not collar_matrix or not isinstance(collar_matrix, list):
         return "NO_DATA"
 
     for collar_logs in collar_matrix:
+        if not isinstance(collar_logs, list):
+            continue
         signal_lost_streak = 0
         for signal_strength in collar_logs:
+            if not isinstance(signal_strength, (int, float)):
+                continue
             if signal_strength < 20:
                 signal_lost_streak += 1
                 if signal_lost_streak >= 2:
@@ -73,3 +77,35 @@ def inspect_gps_collars(collar_matrix):
             else:
                 signal_lost_streak = 0
     return "ONLINE"
+
+if __name__ == "__main__":
+
+    routes = []
+    n = int(input("How many routes are you entering?"))
+    for i in range(n):
+        print(f"Route {i+1}")
+        confirmed = int(input("Is the route confirmed? (if yes enter 1 else 0): ")) == 1
+        session_type = input("Enter session type: ")
+        weekend = int(input("Is it a weekend task? (if yes enter 1 else 0): ")) == 1
+        m = int(input("How many walks are you recording? "))
+        walks = []
+        for j in range(m):
+            print(f"walk {j+1}")
+            num = int(input("Enter number of pets: "))
+            agressive = int(input("Was the pet agressive? (if yes enter 1 else 0): ")) == 1
+            meds = int(input("Did the pet need medication? (if yes enter 1 else 0): ")) == 1
+            walks.append({"num_pets": num, "aggression_alert": agressive, "needs_meds": meds})
+
+        routes.append(
+            {
+                "route_confirmed":confirmed,
+                "session_type": session_type,
+                "is_weekend": weekend,
+                "walks": walks
+            }
+        )
+
+    print(confirmed)
+    base_fee = float(input("Enter the base transport fee"))
+    result = process_walking_routes(routes, base_fee)
+    print(f"Status: {result['status']} \nTotal revenue: {result['total_revenue']}")
